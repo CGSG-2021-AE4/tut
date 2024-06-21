@@ -1,0 +1,7 @@
+.git
+.cache
+.vs
+compile_commands.json
+neovim.json
+out/
+
