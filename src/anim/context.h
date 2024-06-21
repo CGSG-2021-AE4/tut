@@ -9,6 +9,48 @@ namespace tut::anim
   class window;
   class window_system;
 
+  // Message classes
+  namespace messages
+  {
+    // Window events
+
+    struct window_resize_event
+    {
+      isize2 NewSize;
+    };
+
+    // Input events
+    
+    struct mouse_motion_event
+    {
+      ivec3 Delta;
+    };
+
+    struct mouse_button_event
+    {
+      UINT Key;
+    };
+
+    struct keyboard_event
+    {
+      // ???
+    };
+
+    // Common messages
+
+    struct close_message
+    {
+    };
+  } // end of 'messages' namespace
+
+  using message = std::variant<
+    messages::window_resize_event,
+    messages::mouse_motion_event,
+    messages::mouse_button_event,
+    messages::keyboard_event,
+    messages::close_message
+  >;
+
   class context
   {
   public:
@@ -18,6 +60,8 @@ namespace tut::anim
 
     // Global variables and states
     window *MainWindow {nullptr};
+    async::channel<message> MsgQueue {};
+
 
     // Default constructor
     context( VOID )

@@ -68,10 +68,21 @@ namespace tut
   using FLT = float;
   using DBL = double;
 
-  // Binary types
-  using BYTE = std::uint8_t;
-  using WORD = std::uint16_t;
-  using DWORD = std::uint32_t;
+  // Strict types
+  using UINT8 = std::uint8_t;
+  using UINT16 = std::uint16_t;
+  using UINT32 = std::uint32_t;
+  using UINT64 = std::uint64_t;
+
+  using INT8 = std::int8_t;
+  using INT16 = std::int16_t;
+  using INT32 = std::int32_t;
+  using INT64 = std::int64_t;
+
+  using BYTE = UINT8;
+  using WORD = UINT16;
+  using DWORD = UINT32;
+
 
   // Standard types
   using SIZE_T = std::size_t;

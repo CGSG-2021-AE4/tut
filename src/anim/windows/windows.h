@@ -19,7 +19,7 @@ namespace tut::anim
 
   public:
 
-    window( std::string_view Title, const vec2 &Pos, const size &Size, DWORD Flags ) :
+    window( std::string_view Title, const ivec2 &Pos, const isize2 &Size, DWORD Flags ) :
       Wnd {SDL_CreateWindow(Title.data(), Pos.X, Pos.Y, Size.W, Size.H, Flags)}
     {
     } // End of 'window' function
@@ -41,6 +41,8 @@ namespace tut::anim
   class window_system
   {
   public:
+    context *Ctx {nullptr};
+    std::thread EventPollLoop;
 
     // Default constructor
     window_system( VOID )
@@ -55,20 +57,46 @@ namespace tut::anim
         throw std::exception("SDL Init failed.");
     } // End of 'WaitInit' function
 
-    // Post init
-    VOID PostInit( context &Ctx )
+    // Main event poll loop
+    VOID RunEventPollLoop( VOID )
     {
+      BOOL ExitFlag {FALSE};
+      SDL_Event e;
+      while (!ExitFlag)
+      {
+        while (SDL_PollEvent(&e) != 0)
+        {
+          switch (e.type)
+          {
+          case SDL_QUIT:
+            ExitFlag = TRUE;
+            Ctx->MsgQueue.PushBack(messages::close_message {});
+            break;
+          }
+        }
+      }
+    } // End of 'RunEventPollLoop' function
+
+    // Post init
+    VOID PostInit( context &InCtx )
+    {
+      Ctx = &InCtx;
+
+      // Start event poll cycle
+      //EventPollLoop = std::thread(&window_system::RunEventPollLoop, this);
     } // End of 'PostInit' function
 
     VOID Close( VOID )
     {
+      // Wait for event poll loop to finish
+      // if (EventPollLoop.joinable())
+      //   EventPollLoop.join();
       // Destroy all existing windows but... I do not store them yet)
-
       // SDL deinit
       SDL_Quit();
     }
 
-    window *CreateWindow( std::string_view Title, const vec2 &Pos, const size &Size, DWORD Flags )
+    window *CreateWindow( std::string_view Title, const ivec2 &Pos, const isize2 &Size, DWORD Flags )
     {
       // I am sure it is not right but for the first time OK
       auto Wnd = new window(Title, Pos, Size, Flags);

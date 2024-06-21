@@ -16,17 +16,8 @@ namespace tut::async
                                       // If it is in a common lock state: -1
   public:
 
-    /* Default constructor function.
-     * ARGUMENTS: None.
-     * RETURNS: None.
-     */
-    spinlock( VOID ) :
-      UsersCounter(0)
-    {
-    } /* End of 'spinlock' function */
-
     // Default constructor function.
-    spinlock( BOOL DoLock = false ) :
+    spinlock( BOOL DoLock = FALSE ) :
       UsersCounter(DoLock ? -1 : 0)
     {
     } // End of 'spinlock' function
@@ -193,9 +184,9 @@ namespace tut::async
     {
     private:
 
-      spinlock SyncMutex;
+      std::mutex SyncMutex; // STL DO NOT SUPPORT CONDVAR WITH CUSTOM MUTEX TYPE WTF??????
       std::condition_variable CondVar;
-      std::deque Container;
+      std::deque<obj_type> Container;
 
     public:
 
@@ -220,10 +211,8 @@ namespace tut::async
 
       VOID Pop( obj_type &Obj )
       {
-        std::lock_guard Lock(SyncMutex);
-        CondVar.wait(Lock, [this](){
-           return !Container.empty();
-        });
+        std::unique_lock Lock(SyncMutex);
+        CondVar.wait(Lock, [this]{ return !Container.empty(); });
         Obj = Container.front();
         Container.pop_front();
       } // End of 'Pop' function

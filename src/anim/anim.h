@@ -45,7 +45,7 @@ namespace tut::anim
       Context.WindowSystem->WaitInit();
 
       // Create main window
-      Context.MainWindow = Context.WindowSystem->CreateWindow("TUT main window", vec2 {100, 100}, size {300, 200}, SDL_WINDOW_SHOWN);
+      Context.MainWindow = Context.WindowSystem->CreateWindow("TUT main window", ivec2 {100, 100}, isize2 {300, 200}, SDL_WINDOW_SHOWN);
       if (Context.MainWindow == nullptr)
         throw std::exception("Main window creation error");
 
@@ -53,6 +53,20 @@ namespace tut::anim
       Context.WindowSystem->PostInit(Context);
 
     } // End if 'Init' function
+
+    // Get context function
+    context & GetContext( VOID ) noexcept
+    {
+      return Context;
+    } // End of 'GetContext' function
+
+    // Wait until the signal of close
+    VOID WaitClose( VOID )
+    {
+      // MEGA SHIT
+      message m;
+      Context.MsgQueue.Pop(m);
+    } // End of 'WaitClose' function
 
     // Anim close
     VOID Close( VOID )
