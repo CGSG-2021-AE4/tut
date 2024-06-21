@@ -14,6 +14,7 @@ namespace tut::anim
   class window
   {
   private:
+
     SDL_Window *Wnd {nullptr}; // SDL window object
 
   public:
@@ -41,23 +42,30 @@ namespace tut::anim
   {
   public:
 
+    // Default constructor
     window_system( VOID )
     {
-    }
+    } // End of 'window_system' function
 
+    // Self init
     VOID WaitInit( VOID )
     {
+      // SDL init
       if (SDL_Init(SDL_INIT_VIDEO) < 0)
         throw std::exception("SDL Init failed.");
-    }
+    } // End of 'WaitInit' function
 
+    // Post init
     VOID PostInit( context &Ctx )
     {
-    }
+    } // End of 'PostInit' function
 
     VOID Close( VOID )
     {
       // Destroy all existing windows but... I do not store them yet)
+
+      // SDL deinit
+      SDL_Quit();
     }
 
     window *CreateWindow( std::string_view Title, const vec2 &Pos, const size &Size, DWORD Flags )

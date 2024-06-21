@@ -74,6 +74,6 @@ namespace tut
   inline constexpr BOOL TRUE = true;
   inline constexpr BOOL FALSE = false;
 
-}
+} // end of 'tut' namespace
 
 #endif // __def_h_

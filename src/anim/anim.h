@@ -9,6 +9,7 @@
 
 namespace tut::anim
 {
+  // Main anim class
   class anim
   {
   private:

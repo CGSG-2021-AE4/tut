@@ -31,6 +31,6 @@ namespace tut::anim
     context & operator=( context &&Other ) noexcept = delete;
 
   }; // End of 'context' class
-} // end of 'tut' namespace
+} // end of 'tut::anim' namespace
 
 #endif // __context_h_

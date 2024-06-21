@@ -25,4 +25,4 @@ int main( int argv, char **args )
   Anim.Close();
 
   return 0;
-}
+} // End of 'main' function

@@ -11,6 +11,6 @@ namespace tut
   using vec3 = mth::vec3<FLT>;
   using vec4 = mth::vec4<FLT>;
   using size = mth::size<FLT>;
-}
+} // end of 'tut' namespace
 
 #endif // __tut_h_
