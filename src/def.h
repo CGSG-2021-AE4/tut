@@ -7,6 +7,7 @@
 #include <vector>
 #include <stack>
 #include <queue>
+#include <deque>
 #include <map>
 #include <set>
 #include <array>
@@ -18,6 +19,11 @@
 #include <string>
 #include <string_view>
 #include <format>
+
+// Concurrency
+#include <mutex>
+#include <shared_mutex>
+#include <condition_variable>
 
 // Other
 #include <assert.h>

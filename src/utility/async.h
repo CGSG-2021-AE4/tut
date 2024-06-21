@@ -187,6 +187,49 @@ namespace tut::async
 
   }; // End of 'spinlock' class
 
+  // Analog of channel in GO
+  template<typename obj_type>
+    class channel
+    {
+    private:
+
+      spinlock SyncMutex;
+      std::condition_variable CondVar;
+      std::deque Container;
+
+    public:
+
+      // Default constructor
+      channel( VOID )
+      {
+      } // End of 'channel' function
+
+      VOID Push( obj_type &&Obj )
+      {
+        std::lock_guard Lock(SyncMutex);
+        Container.push_front(Obj);
+        CondVar.notify_all();
+      } // End of 'Push' function
+
+      VOID PushBack( obj_type &&Obj )
+      {
+        std::lock_guard Lock(SyncMutex);
+        Container.push_back(Obj);
+        CondVar.notify_all();
+      } // End of 'PushBack' function
+
+      VOID Pop( obj_type &Obj )
+      {
+        std::lock_guard Lock(SyncMutex);
+        CondVar.wait(Lock, [this](){
+           return !Container.empty();
+        });
+        Obj = Container.front();
+        Container.pop_front();
+      } // End of 'Pop' function
+
+    }; // End of 'channel' class
+
 } // end of 'tut::async' namespace
 
 #endif // __async_h_
