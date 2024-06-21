@@ -1,36 +1,11 @@
-#include "utility/image.h"
+//#include "utility/image.h"
+
+#include "anim/anim.h"
 
 using namespace tut;
 int main( int argv, char **args )
 {
-  /*
-  std::cout << "CGSG forever!!!\n";
-
-  if (SDL_Init(SDL_INIT_VIDEO) < 0)
-    std::runtime_error("SDL Init failed.");
-
-  SDL_Window *window = SDL_CreateWindow("First SDL", 100, 100, 200, 100, SDL_WINDOW_SHOWN);
-
-  if (window == nullptr)
-    std::runtime_error("Window creation failed.");
-
-  SDL_Surface *screenSurface = SDL_GetWindowSurface(window);
-
-  SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 0xFF, 0xFF, 0x00));
-  SDL_UpdateWindowSurface(window);
-
-  SDL_Event e;
-  bool quit = false;
-
-  while (!quit)
-    while (SDL_PollEvent(&e))
-      if (e.type == SDL_QUIT)
-        quit = true;
-
-  SDL_DestroyWindow(window);
-  SDL_Quit();
-  */
-
+  /* Resource management test * /
   auto *ImgPtr {new image {"AAAA"}};
 
   {
@@ -41,6 +16,13 @@ int main( int argv, char **args )
       AnotherPtr.Get()->GetFileName();
     }
   }
+  /**/
+
+  tut::anim::anim Anim {};
+
+  Anim.Init();
+
+  Anim.Close();
 
   return 0;
 }
