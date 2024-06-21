@@ -1,5 +1,3 @@
-#include <iostream>
-//#include <SDL.h>
 #include "utility/image.h"
 
 using namespace tut;

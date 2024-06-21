@@ -1,6 +1,7 @@
-#include <string>
-#include <string_view>
-#include <iostream>
+#ifndef __image_h_
+#define __image_h_
+
+#include "def.h"
 
 #include "resource.h"
 
@@ -29,10 +30,7 @@ namespace tut
       return FileName;
     }
 
-    VOID Destroy( VOID ) noexcept override
-    {
-      std::cout << "Image destroy\n";
-      //FileName.clear();
-    }
   }; // End of 'image' class
 }
+
+#endif // __image_h_

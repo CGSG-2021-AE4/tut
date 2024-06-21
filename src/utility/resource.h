@@ -1,11 +1,9 @@
+#include <iostream>
+
 #ifndef __resource_h_
 #define __resource_h_
 
-#include <atomic>
-#include <assert.h>
-#include <iostream>
-
-#include "types.h"
+#include "def.h"
 
 namespace tut
 {
@@ -35,9 +33,6 @@ namespace tut
     resource( resource &&Other ) noexcept = delete;
     resource & operator=( resource &&Other ) = delete;
   
-    // Destroy virtual function - will be invoked when reference counter decrease to 0
-    virtual VOID Destroy( VOID ) noexcept = 0;
-
     // Increase reference counter
     VOID AddReference() noexcept
     {
@@ -52,7 +47,6 @@ namespace tut
         // I am using RAII => now there is now resource managers!!!
         // Maybe later I will have to change it
         // No valid refernces => time to destroy
-        Destroy();
         delete this;
       }
     } // End of 'AddRefernce' function
