@@ -8,6 +8,7 @@ namespace tut::anim
   // Types declaration
   class window;
   class window_system;
+  class input_system;
 
   // Message classes
   namespace messages
@@ -23,7 +24,12 @@ namespace tut::anim
     
     struct mouse_motion_event
     {
-      ivec3 Delta;
+      ivec2 Delta;
+    };
+    
+    struct mouse_wheel_event
+    {
+      ivec2 Delta;
     };
 
     struct mouse_button_event
@@ -40,12 +46,15 @@ namespace tut::anim
 
     struct close_message
     {
+      INT a;
+      BOOL b;
     };
   } // end of 'messages' namespace
 
   using message = std::variant<
     messages::window_resize_event,
     messages::mouse_motion_event,
+    messages::mouse_wheel_event,
     messages::mouse_button_event,
     messages::keyboard_event,
     messages::close_message
@@ -57,6 +66,7 @@ namespace tut::anim
     // Systems
     // Use pointers because class are only declared and pointers retain possibility of interfaces in future
     window_system *WindowSystem {nullptr};
+    input_system *InputSystem {nullptr};
 
     // Global variables and states
     window *MainWindow {nullptr};

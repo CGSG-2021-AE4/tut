@@ -5,6 +5,7 @@
 
 #include "context.h"
 #include "windows/windows.h"
+#include "input/input.h"
 
 
 namespace tut::anim
@@ -38,11 +39,13 @@ namespace tut::anim
     {
       // Now I allocate systems here
       // Later will remove it
-
+      // I store them as poiters because it retaines possibility of several implementation in future
       Context.WindowSystem = new window_system();
+      Context.InputSystem = new input_system();
 
       // Self init
       Context.WindowSystem->WaitInit();
+      Context.InputSystem->WaitInit();
 
       // Create main window
       Context.MainWindow = Context.WindowSystem->CreateWindow("TUT main window", ivec2 {100, 100}, isize2 {300, 200}, SDL_WINDOW_SHOWN);
@@ -51,6 +54,7 @@ namespace tut::anim
 
       // Post init
       Context.WindowSystem->PostInit(Context);
+      Context.InputSystem->PostInit(Context);
 
     } // End if 'Init' function
 
@@ -75,10 +79,12 @@ namespace tut::anim
       Context.WindowSystem->DestroyWindow(Context.MainWindow);
 
       // Closing systems
+      Context.InputSystem->Close();
       Context.WindowSystem->Close();
 
       // Deallocate context
       delete Context.WindowSystem;
+      delete Context.InputSystem;
 
     } // End of 'Close' function
   }; // End of 'anim' class

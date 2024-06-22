@@ -72,6 +72,12 @@ namespace tut::anim
             ExitFlag = TRUE;
             Ctx->MsgQueue.PushBack(messages::close_message {});
             break;
+          case SDL_MOUSEMOTION:
+            Ctx->MsgQueue.PushBack(messages::mouse_motion_event { ivec2 {e.motion.xrel, e.motion.yrel} });
+            break;
+          case SDL_MOUSEWHEEL:
+            Ctx->MsgQueue.PushBack(messages::mouse_wheel_event { ivec2 {e.wheel.x, e.wheel.y} });
+            break;
           }
         }
       }
@@ -94,7 +100,7 @@ namespace tut::anim
       // Destroy all existing windows but... I do not store them yet)
       // SDL deinit
       SDL_Quit();
-    }
+    } // End of 'Close' function
 
     window *CreateWindow( std::string_view Title, const ivec2 &Pos, const isize2 &Size, DWORD Flags )
     {
@@ -107,12 +113,12 @@ namespace tut::anim
         return nullptr;
       }
       return Wnd;
-    }
+    } // End of 'CreateWindow' function
 
     VOID DestroyWindow( window *Wnd )
     {
       delete Wnd;
-    }
+    } // End of 'DestroyWindow' function
 
   }; // End of 'window_system' class
 } // end of 'tut::anim' namespace

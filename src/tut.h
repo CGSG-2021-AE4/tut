@@ -14,10 +14,16 @@ namespace tut
   using vec4 = mth::vec4<FLT>;
   using size2 = mth::size<FLT>;
   
-  using ivec2 = mth::vec2<UINT>;
-  using ivec3 = mth::vec3<UINT>;
-  using ivec4 = mth::vec4<UINT>;
-  using isize2 = mth::size<UINT>;
+  using ivec2 = mth::vec2<INT>;
+  using ivec3 = mth::vec3<INT>;
+  using ivec4 = mth::vec4<INT>;
+  using isize2 = mth::size<INT>;
+
+  // Some meta from FB1
+  // Meta used for std::variant handling
+  template<class... ts>
+    struct overloaded : ts... { using ts::operator()...; };
+
 } // end of 'tut' namespace
 
 #endif // __tut_h_

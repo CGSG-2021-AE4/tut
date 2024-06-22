@@ -18,7 +18,7 @@ int main( int argv, char **args )
   }
   /**/
 
-  tut::anim::anim Anim {};
+  tut::anim::anim Anim  {};
 
   Anim.Init();
   Anim.GetContext().WindowSystem->RunEventPollLoop(); // Limitation of the platform: PollEvent loop has to be in the same thread... SDL WTF?
