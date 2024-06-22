@@ -102,6 +102,10 @@ namespace tut::anim
       SDL_Quit();
     } // End of 'Close' function
 
+    VOID OnMessage( message &Msg )
+    {
+    } // End of 'OnMessage' function
+
     window *CreateWindow( std::string_view Title, const ivec2 &Pos, const isize2 &Size, DWORD Flags )
     {
       // I am sure it is not right but for the first time OK

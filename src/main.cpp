@@ -1,6 +1,7 @@
 //#include "utility/image.h"
 
 #include "anim/anim.h"
+#include "units/unit_test.h"
 
 using namespace tut;
 int main( int argv, char **args )
@@ -21,6 +22,10 @@ int main( int argv, char **args )
   tut::anim::anim Anim  {};
 
   Anim.Init();
+
+  // Units
+  auto *u = Anim.GetContext().UnitSystem->CreateUnit<units::unit_test>();
+
   Anim.GetContext().WindowSystem->RunEventPollLoop(); // Limitation of the platform: PollEvent loop has to be in the same thread... SDL WTF?
 
   Anim.Close();

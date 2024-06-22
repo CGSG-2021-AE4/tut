@@ -1,7 +1,7 @@
 # Tu tu tu tut...
 T**** U******** T****
 
-Now it's just anim project. I have some further plans but I am not sure will I be able to finish it. Try to guess the title)).
+Now it's just anim project. I have some further plans but I am not sure I will be able to finish it. Try to guess the title)).
 
 # Docs:
 
@@ -11,6 +11,7 @@ This approach has too much code for a project like this and different implementa
 Maybe I will add them in future). Purposes of the systems are mostly the same as in TAP.
 
 Main class - `anim`. It has `context` that contains all global objects like systems, main window, message queue, input state, etc. `anim` initializes and closes systems.
+Every system implements `WaitInit`, `PostInit` and `Close` methods.
 
 ##### Anim initialization:
 
@@ -29,7 +30,7 @@ Now project uses `SDL2` and supports only one window(I am not sure). Window syst
 Pops all messages from message queue, sends them to systems: Units, Render?, Windows. Not implemented yet.
 
 ##### Units system
-Now there is no scenes in project, only units. Not implemented yet.
+Now it is minimal, simpliest version. There is no scenes in project, only units. Every unit that was created is considered as active and starts to receive messages from system. To deactivate a unit you have to destroy it.
 
 ### Utilities
 

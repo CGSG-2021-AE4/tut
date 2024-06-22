@@ -28,6 +28,9 @@
 // Other
 #include <assert.h>
 
+// Meta
+#include <concepts>
+
 // Debug memory allocation support
 #if !defined(NDEBUG)
 #  define _CRTDBG_MAP_ALLOC

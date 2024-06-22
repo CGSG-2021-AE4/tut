@@ -28,31 +28,6 @@ namespace tut::anim
       
     } // End of 'WaitInit' function
 
-  private:
-
-    // Run event pop loop
-    VOID RunLoop( VOID )
-    {
-      BOOL ExitFlag {FALSE};
-      while (!ExitFlag)
-      {
-        message Msg;
-        Ctx->MsgQueue.Pop(Msg);
-        std::visit(overloaded { []( auto &Msg ) { /* Default message */ },
-          [&ExitFlag, this]( messages::close_message &CloseMsg )
-          {
-            ExitFlag = TRUE;
-          },
-          [&ExitFlag, this]( messages::mouse_motion_event &E )
-          {
-            std::cout << std::format("Mouse motion event - Delta: [{},{}]\n", E.Delta.X, E.Delta.Y);
-          }
-        },Msg);
-      }
-    } // End of 'RunLoop' function
-
-  public:
-
     // Post init
     VOID PostInit( context &InCtx )
     {
@@ -65,7 +40,18 @@ namespace tut::anim
     {
       if (EventLoopThread.joinable())
         EventLoopThread.join();
+
     } // End of 'Close' function
+
+  private:
+
+    VOID OnMessage( message &Msg )
+    {
+
+    } // End of 'OnMessage' function
+
+    VOID RunLoop( VOID );
+
   }; // End of 'input_system' class
 
 } // end of 'tut::anim' namespace

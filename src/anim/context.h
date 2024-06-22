@@ -9,6 +9,7 @@ namespace tut::anim
   class window;
   class window_system;
   class input_system;
+  class unit_system;
 
   // Message classes
   namespace messages
@@ -67,11 +68,11 @@ namespace tut::anim
     // Use pointers because class are only declared and pointers retain possibility of interfaces in future
     window_system *WindowSystem {nullptr};
     input_system *InputSystem {nullptr};
+    unit_system *UnitSystem {nullptr};
 
     // Global variables and states
     window *MainWindow {nullptr};
     async::channel<message> MsgQueue {};
-
 
     // Default constructor
     context( VOID )
