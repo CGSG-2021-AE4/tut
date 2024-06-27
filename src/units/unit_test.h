@@ -24,7 +24,7 @@ namespace tut::units
 
     VOID OnMessage( anim::message &Msg ) override
     {
-      std::cout << "Got msg\n";
+      std::cout << "Got " + anim::messages::Format(Msg) + " event\n";
     } // End of 'OnMessage' function
 
     VOID Close( VOID ) override

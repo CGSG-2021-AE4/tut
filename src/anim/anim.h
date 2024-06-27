@@ -50,7 +50,7 @@ namespace tut::anim
       Context.UnitSystem->WaitInit();
 
       // Create main window
-      Context.MainWindow = Context.WindowSystem->CreateWindow("TUT main window", ivec2 {100, 100}, isize2 {300, 200}, SDL_WINDOW_SHOWN);
+      Context.MainWindow = Context.WindowSystem->CreateWindow("TUT main window", ivec2 {100, 100}, isize2 {300, 200}, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
       if (Context.MainWindow == nullptr)
         throw std::exception("Main window creation error");
 

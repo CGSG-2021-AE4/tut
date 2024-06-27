@@ -18,29 +18,63 @@
 #ifndef __mthdef_h_
 #define __mthdef_h_
 
-typedef double DBL;
-typedef double FLT;
 
-using INT = int;
-using UINT = unsigned;
-using LONG = long;
-using CHAR = char;
-using BYTE = unsigned char;
-using VOID = void;
-using SIZE_T = size_t;
-using BOOL = bool;
-#define FALSE false
-#define TRUE true
+namespace mth::common_types
+{
+  // Common types
+  using VOID = void;
+  using BOOL = bool;
+  using CHAR = char;
+  using UCHAR = unsigned char;
+  using SHORT = short;
+  using USHORT = unsigned short;
+  using INT = int;
+  using UINT = unsigned;
+  using LONG = long;
+  using ULONG = unsigned long;
+  using LONGLONG = long long;
+  using ULONGLONG = unsigned long long;
+  using FLT = float;
+  using DBL = double;
 
-template<typename Type> class vec2;
-template<typename Type> class vec3;
-template<typename Type> class vec4;
+  // Strict types
+  using UINT8 = std::uint8_t;
+  using UINT16 = std::uint16_t;
+  using UINT32 = std::uint32_t;
+  using UINT64 = std::uint64_t;
 
-template<typename Type> class matr;
-template<typename Type> class ray;
-template<typename Type> class intr;
-template<typename Type> class cam;
-class noise;
+  using INT8 = std::int8_t;
+  using INT16 = std::int16_t;
+  using INT32 = std::int32_t;
+  using INT64 = std::int64_t;
+
+  using BYTE = UINT8;
+  using WORD = UINT16;
+  using DWORD = UINT32;
+
+  // Standard types
+  using SIZE_T = std::size_t;
+
+  // Come constants
+  inline constexpr BOOL TRUE = true;
+  inline constexpr BOOL FALSE = false;
+} // end of 'mth::common_types' namespace
+
+namespace mth
+{
+  using namespace common_types;
+
+  template<typename Type> class vec2;
+  template<typename Type> class vec3;
+  template<typename Type> class vec4;
+
+  template<typename Type> class matr;
+  template<typename Type> class ray;
+  template<typename Type> class intr;
+  template<typename Type> class cam;
+  class noise;
+} // end of 'mth' namespace
+
 
 /* defines */
 #define PI 3.14159265358979323846

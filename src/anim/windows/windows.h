@@ -11,24 +11,26 @@
 
 namespace tut::anim
 {
+  // Classes declaration
+  class window_system;
+
+  // Window
   class window
   {
-  private:
-
+  protected:
+    friend class window_system;
+    
     SDL_Window *Wnd {nullptr}; // SDL window object
+    window_state State {};     // Visual state
+    isize2 Size;               // Current window size
 
   public:
 
     window( std::string_view Title, const ivec2 &Pos, const isize2 &Size, DWORD Flags ) :
-      Wnd {SDL_CreateWindow(Title.data(), Pos.X, Pos.Y, Size.W, Size.H, Flags)}
+      Wnd {SDL_CreateWindow(Title.data(), Pos.X, Pos.Y, Size.W, Size.H, Flags)},
+      Size {Size}
     {
     } // End of 'window' function
-
-    // Check if window is valid
-    BOOL Validate( VOID ) noexcept
-    {
-      return Wnd != nullptr;
-    } // End of 'Validate' function
 
     ~window( VOID )
     {
@@ -36,6 +38,31 @@ namespace tut::anim
         SDL_DestroyWindow(Wnd);
     } // End of '~window' function
 
+    // Check if window is valid
+    BOOL Validate( VOID ) noexcept
+    {
+      return Wnd != nullptr;
+    } // End of 'Validate' function
+
+    isize2 GetSize( VOID ) const noexcept
+    {
+      return State.IsMinimised ? isize2 {0, 0} : Size;
+    } // End of 'GetSize' function
+
+    // Event functions - public because are executed from lambda
+
+    VOID OnResize( const isize2 &NewSize )
+    {
+      Size = NewSize;
+      std::cout << "WINDOW new size\n";
+      // Maybe something...
+    } // End of 'OnResize' function
+    
+    VOID OnSwitchState( const window_state &NewState )
+    {
+      std::cout << "WINDOW new state\n";
+      State = NewState;
+    } // End of 'OnSwitchState' function
   }; // End of 'window' class
 
   class window_system
@@ -43,6 +70,7 @@ namespace tut::anim
   public:
     context *Ctx {nullptr};
     std::thread EventPollLoop;
+    std::map<UINT32, window *> Windows;
 
     // Default constructor
     window_system( VOID )
@@ -72,6 +100,58 @@ namespace tut::anim
             ExitFlag = TRUE;
             Ctx->MsgQueue.PushBack(messages::close_message {});
             break;
+          case SDL_WINDOWEVENT:
+          {
+            auto we = e.window;
+            std::cout << we.windowID;
+            auto *Wnd = Windows[we.windowID]; // Should not fail...
+            auto WndState = Wnd->State;
+
+            switch (we.event)
+            {
+              case SDL_WINDOWEVENT_SIZE_CHANGED:
+                Ctx->MsgQueue.PushBack(messages::window_resize_event { Wnd, isize2 { we.data1, we.data2 } });
+                break;
+              case SDL_WINDOWEVENT_MINIMIZED:
+                WndState.IsMinimised = TRUE;
+                Ctx->MsgQueue.PushBack(messages::window_switch_state_event { Wnd, WndState });
+                break;
+              case SDL_WINDOWEVENT_RESTORED:
+                WndState.IsMinimised = FALSE;
+                Ctx->MsgQueue.PushBack(messages::window_switch_state_event { Wnd, WndState });
+                break;
+              case SDL_WINDOWEVENT_ENTER:
+                WndState.IsHovered = TRUE;
+                Ctx->MsgQueue.PushBack(messages::window_switch_state_event { Wnd, WndState });
+                break;
+              case SDL_WINDOWEVENT_LEAVE:
+                WndState.IsHovered = FALSE;
+                Ctx->MsgQueue.PushBack(messages::window_switch_state_event { Wnd, WndState });
+                break;
+              case SDL_WINDOWEVENT_FOCUS_GAINED:
+                WndState.IsFocused = TRUE;
+                Ctx->MsgQueue.PushBack(messages::window_switch_state_event { Wnd, WndState });
+                break;
+              case SDL_WINDOWEVENT_FOCUS_LOST:
+                WndState.IsFocused = FALSE;
+                Ctx->MsgQueue.PushBack(messages::window_switch_state_event { Wnd, WndState });
+                break;
+              case SDL_WINDOWEVENT_SHOWN: // --
+              case SDL_WINDOWEVENT_HIDDEN: // --
+              case SDL_WINDOWEVENT_EXPOSED: // --
+              case SDL_WINDOWEVENT_MOVED: // --
+              case SDL_WINDOWEVENT_RESIZED: // --
+              case SDL_WINDOWEVENT_MAXIMIZED: // --
+              case SDL_WINDOWEVENT_CLOSE: // --
+              case SDL_WINDOWEVENT_TAKE_FOCUS: // --
+              case SDL_WINDOWEVENT_HIT_TEST: // --
+              case SDL_WINDOWEVENT_ICCPROF_CHANGED: // --
+              case SDL_WINDOWEVENT_DISPLAY_CHANGED : // --
+                break;
+            }
+            //Ctx->MsgQueue.PushBack(messages::window_resize_event {  });
+            break;
+          }
           case SDL_MOUSEMOTION:
             Ctx->MsgQueue.PushBack(messages::mouse_motion_event { ivec2 {e.motion.xrel, e.motion.yrel} });
             break;
@@ -104,6 +184,16 @@ namespace tut::anim
 
     VOID OnMessage( message &Msg )
     {
+      std::visit(overloaded { []( auto &Msg ) { /* Default case */ },
+        [this]( messages::window_resize_event &Msg )
+        {
+          Msg.Wnd->OnResize(Msg.NewSize);
+        },
+        [this]( messages::window_switch_state_event &Msg )
+        {
+          Msg.Wnd->OnSwitchState(Msg.NewState);
+        }
+      }, Msg);
     } // End of 'OnMessage' function
 
     window *CreateWindow( std::string_view Title, const ivec2 &Pos, const isize2 &Size, DWORD Flags )
@@ -116,44 +206,17 @@ namespace tut::anim
         delete Wnd;
         return nullptr;
       }
+      Windows.emplace(SDL_GetWindowID(Wnd->Wnd), Wnd);
       return Wnd;
     } // End of 'CreateWindow' function
 
     VOID DestroyWindow( window *Wnd )
     {
+      Windows.erase(SDL_GetWindowID(Wnd->Wnd));
       delete Wnd;
     } // End of 'DestroyWindow' function
 
   }; // End of 'window_system' class
 } // end of 'tut::anim' namespace
-
-/* SDL window sample 
- 
-std::cout << "CGSG forever!!!\n";
-
-if (SDL_Init(SDL_INIT_VIDEO) < 0)
-  std::runtime_error("SDL Init failed.");
-
-SDL_Window *window = SDL_CreateWindow("First SDL", 100, 100, 200, 100, SDL_WINDOW_SHOWN);
-
-if (window == nullptr)
-  std::runtime_error("Window creation failed.");
-
-SDL_Surface *screenSurface = SDL_GetWindowSurface(window);
-
-SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 0xFF, 0xFF, 0x00));
-SDL_UpdateWindowSurface(window);
-
-SDL_Event e;
-bool quit = false;
-
-while (!quit)
-  while (SDL_PollEvent(&e))
-    if (e.type == SDL_QUIT)
-      quit = true;
-
-SDL_DestroyWindow(window);
-SDL_Quit();
-*/
 
 #endif // __windows_h_

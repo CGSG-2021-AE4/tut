@@ -11,13 +11,29 @@ namespace tut::anim
   class input_system;
   class unit_system;
 
+  // Window state descriptor
+  struct window_state
+  {
+    BOOL
+      IsFocused   = FALSE,
+      IsHovered   = FALSE,
+      IsMinimised = FALSE;
+  }; // End of 'window_state' struct
+
   // Message classes
   namespace messages
   {
     // Window events
 
+    struct window_switch_state_event
+    {
+      window *Wnd;
+      window_state NewState;
+    };
+
     struct window_resize_event
     {
+      window *Wnd;
       isize2 NewSize;
     };
 
@@ -50,9 +66,11 @@ namespace tut::anim
       INT a;
       BOOL b;
     };
+
   } // end of 'messages' namespace
 
   using message = std::variant<
+    messages::window_switch_state_event,
     messages::window_resize_event,
     messages::mouse_motion_event,
     messages::mouse_wheel_event,
@@ -60,6 +78,11 @@ namespace tut::anim
     messages::keyboard_event,
     messages::close_message
   >;
+
+  namespace messages
+  {
+    std::string Format( const message &Msg );
+  } // end of 'messages' namespace
 
   class context
   {

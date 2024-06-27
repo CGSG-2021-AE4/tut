@@ -53,47 +53,14 @@ public:
 
 #endif // _DEBUG
 
+
+// Import types
+
+#include "utility/math/mthdef.h"
+
 namespace tut
 {
-  // Common types
-  using VOID = void;
-  using BOOL = bool;
-  using CHAR = char;
-  using UCHAR = unsigned char;
-  using SHORT = short;
-  using USHORT = unsigned short;
-  using INT = int;
-  using UINT = unsigned;
-  using LONG = long;
-  using ULONG = unsigned long;
-  using LONGLONG = long long;
-  using ULONGLONG = unsigned long long;
-  using FLT = float;
-  using DBL = double;
-
-  // Strict types
-  using UINT8 = std::uint8_t;
-  using UINT16 = std::uint16_t;
-  using UINT32 = std::uint32_t;
-  using UINT64 = std::uint64_t;
-
-  using INT8 = std::int8_t;
-  using INT16 = std::int16_t;
-  using INT32 = std::int32_t;
-  using INT64 = std::int64_t;
-
-  using BYTE = UINT8;
-  using WORD = UINT16;
-  using DWORD = UINT32;
-
-
-  // Standard types
-  using SIZE_T = std::size_t;
-
-  // Come constants
-  inline constexpr BOOL TRUE = true;
-  inline constexpr BOOL FALSE = false;
-
+  using namespace mth::common_types;
 } // end of 'tut' namespace
 
 #endif // __def_h_

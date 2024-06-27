@@ -11,7 +11,7 @@ add_executable(${PROJECT_NAME}
   "src/anim/anim.h"
   "src/anim/windows/windows.h"
   "src/tut.h"
-  "src/anim/context.h" "src/units/unit_test.h")
+  "src/anim/context.h" "src/units/unit_test.h" "src/anim/context.cpp")
 
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
 

@@ -91,6 +91,7 @@ namespace tut::anim
 
       for (unit *u : Units)
         u->OnMessage(Msg);
+
     } // End of 'OnMessage' function
 
   }; // End of 'unit_system' class
