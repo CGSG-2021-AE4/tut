@@ -4,7 +4,7 @@
 #include "tut.h"
 
 #include "context.h"
-#include "windows/windows.h"
+#include "window/window.h"
 #include "input/input.h"
 #include "units/units.h"
 
@@ -40,9 +40,9 @@ namespace tut::anim
       // Now I allocate systems here
       // Later will remove it
       // I store them as poiters because it retaines possibility of several implementation in future
-      Context.WindowSystem = new window_system();
-      Context.InputSystem = new input_system();
-      Context.UnitSystem = new unit_system();
+      Context.WindowSystem = new window::system();
+      Context.InputSystem = new input::system();
+      Context.UnitSystem = new units::system();
 
       // Self init
       Context.WindowSystem->WaitInit();

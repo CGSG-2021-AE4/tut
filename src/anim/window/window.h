@@ -1,27 +1,26 @@
-#ifndef __windows_h_
-#define __windows_h_
+#ifndef __window_h_
+#define __window_h_
 
 #include "tut.h"
 
 #include "../context.h"
 
 // Disable converting main to SDL_main
+#ifndef SDL_MAIN_HANDLED
 #define SDL_MAIN_HANDLED
+#endif // SDL_MAIN_HANDLED
 #include <SDL.h>
 
-namespace tut::anim
+namespace tut::anim::window
 {
-  // Classes declaration
-  class window_system;
-
   // Window
   class window
   {
   protected:
-    friend class window_system;
+    friend class system;
     
     SDL_Window *Wnd {nullptr}; // SDL window object
-    window_state State {};     // Visual state
+    state State {};     // Visual state
     isize2 Size;               // Current window size
 
   public:
@@ -58,14 +57,14 @@ namespace tut::anim
       // Maybe something...
     } // End of 'OnResize' function
     
-    VOID OnSwitchState( const window_state &NewState )
+    VOID OnSwitchState( const state &NewState )
     {
       std::cout << "WINDOW new state\n";
       State = NewState;
     } // End of 'OnSwitchState' function
   }; // End of 'window' class
 
-  class window_system
+  class system
   {
   public:
     context *Ctx {nullptr};
@@ -73,9 +72,9 @@ namespace tut::anim
     std::map<UINT32, window *> Windows;
 
     // Default constructor
-    window_system( VOID )
+    system( VOID )
     {
-    } // End of 'window_system' function
+    } // End of 'system' function
 
     // Self init
     VOID WaitInit( VOID )
@@ -158,6 +157,13 @@ namespace tut::anim
           case SDL_MOUSEWHEEL:
             Ctx->MsgQueue.PushBack(messages::mouse_wheel_event { ivec2 {e.wheel.x, e.wheel.y} });
             break;
+          case SDL_KEYDOWN:
+            if (!e.key.repeat) // I cannot deside what is better but this way there are less messages TODO deside!!!
+              Ctx->MsgQueue.PushBack(messages::keyboard_event { input::key::FromSDL(e.key.keysym.scancode, e.key.keysym.mod), TRUE });
+            break;
+          case SDL_KEYUP:
+            Ctx->MsgQueue.PushBack(messages::keyboard_event { input::key::FromSDL(e.key.keysym.scancode, e.key.keysym.mod), TRUE });
+            break;
           }
         }
       }
@@ -216,7 +222,7 @@ namespace tut::anim
       delete Wnd;
     } // End of 'DestroyWindow' function
 
-  }; // End of 'window_system' class
-} // end of 'tut::anim' namespace
+  }; // End of 'system' class
+} // end of 'tut::anim::window' namespace
 
-#endif // __windows_h_
+#endif // __window_h_

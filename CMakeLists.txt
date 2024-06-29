@@ -9,9 +9,13 @@ add_executable(${PROJECT_NAME}
   "src/utility/async.h"
   "src/def.h"
   "src/anim/anim.h"
-  "src/anim/windows/windows.h"
+  "src/anim/window/window.h"
   "src/tut.h"
-  "src/anim/context.h" "src/units/unit_test.h" "src/anim/context.cpp")
+  "src/anim/context.h"
+  "src/units/unit_test.h"
+  "src/anim/context.cpp"
+  "src/anim/input/input_defenitions.h"
+)
 
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
 

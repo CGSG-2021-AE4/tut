@@ -4,7 +4,7 @@
 #include "tut.h"
 #include "../context.h"
 
-namespace tut::anim
+namespace tut::anim::units
 {
   // Unit interface
   class unit abstract
@@ -21,7 +21,7 @@ namespace tut::anim
     virtual VOID Close( VOID ) = 0;
   }; // End of 'unit' class
 
-  class unit_system
+  class system
   {
   private:
     context *Ctx;
@@ -31,9 +31,9 @@ namespace tut::anim
   public:
 
     // Default constructor
-    unit_system( VOID )
+    system( VOID )
     {
-    } // End of 'unit_system' function
+    } // End of 'system' function
 
     // Self init
     VOID WaitInit( VOID )
@@ -94,8 +94,8 @@ namespace tut::anim
 
     } // End of 'OnMessage' function
 
-  }; // End of 'unit_system' class
+  }; // End of 'system' class
 
-} // end of 'tut::anim' namespace
+} // end of 'tut::anim::units' namespace
 
 #endif // __units_h_

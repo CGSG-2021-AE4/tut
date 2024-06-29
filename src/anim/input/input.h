@@ -6,9 +6,9 @@
 #include "tut.h"
 #include "../context.h"
 
-namespace tut::anim
+namespace tut::anim::input
 {
-  class input_system
+  class system
   {
   private:
 
@@ -18,9 +18,9 @@ namespace tut::anim
   public:
 
     // Default constructor
-    input_system( VOID )
+    system( VOID )
     {
-    } // End of 'input_system' function
+    } // End of 'system' function
 
     // Self init
     VOID WaitInit( VOID )
@@ -33,7 +33,7 @@ namespace tut::anim
     {
       Ctx = &InCtx; // Ctx cannot be nullptr
 
-      EventLoopThread = std::thread(&input_system::RunLoop, this);
+      EventLoopThread = std::thread(&system::RunLoop, this);
     } // End of 'PostInit' function
 
     VOID Close( VOID )
@@ -52,8 +52,8 @@ namespace tut::anim
 
     VOID RunLoop( VOID );
 
-  }; // End of 'input_system' class
+  }; // End of 'system' class
 
-} // end of 'tut::anim' namespace
+} // end of 'tut::anim::input' namespace
 
 #endif // __input_h_

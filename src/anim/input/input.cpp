@@ -1,11 +1,11 @@
 #include "input.h"
 #include "../units/units.h"
-#include "../windows/windows.h"
+#include "../window/window.h"
 
-namespace tut::anim
+namespace tut::anim::input
 {
   // Run event pop loop
-  VOID input_system::RunLoop( VOID )
+  VOID system::RunLoop( VOID )
   {
     BOOL ExitFlag {FALSE};
     while (!ExitFlag)

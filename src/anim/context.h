@@ -2,24 +2,12 @@
 #define __context_h_
 
 #include "tut.h"
+#include "window/window_defenitions.h"
+#include "input/input_defenitions.h"
+#include "units/units_defenitions.h"
 
 namespace tut::anim
 {
-  // Types declaration
-  class window;
-  class window_system;
-  class input_system;
-  class unit_system;
-
-  // Window state descriptor
-  struct window_state
-  {
-    BOOL
-      IsFocused   = FALSE,
-      IsHovered   = FALSE,
-      IsMinimised = FALSE;
-  }; // End of 'window_state' struct
-
   // Message classes
   namespace messages
   {
@@ -27,13 +15,13 @@ namespace tut::anim
 
     struct window_switch_state_event
     {
-      window *Wnd;
-      window_state NewState;
+      window::window *Wnd;
+      window::state NewState;
     };
 
     struct window_resize_event
     {
-      window *Wnd;
+      window::window *Wnd;
       isize2 NewSize;
     };
 
@@ -56,7 +44,8 @@ namespace tut::anim
 
     struct keyboard_event
     {
-      // ???
+      input::key Key;
+      BOOL IsPressed;
     };
 
     // Common messages
@@ -89,12 +78,12 @@ namespace tut::anim
   public:
     // Systems
     // Use pointers because class are only declared and pointers retain possibility of interfaces in future
-    window_system *WindowSystem {nullptr};
-    input_system *InputSystem {nullptr};
-    unit_system *UnitSystem {nullptr};
+    window::system *WindowSystem {nullptr};
+    input::system *InputSystem {nullptr};
+    units::system *UnitSystem {nullptr};
 
     // Global variables and states
-    window *MainWindow {nullptr};
+    window::window *MainWindow {nullptr};
     async::channel<message> MsgQueue {};
 
     // Default constructor
