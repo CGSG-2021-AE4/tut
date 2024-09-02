@@ -11,7 +11,7 @@
 #endif // SDL_MAIN_HANDLED
 #include <SDL.h>
 
-namespace tut::anim::window
+namespace tut::system::window
 {
   // Window
   class window
@@ -223,6 +223,6 @@ namespace tut::anim::window
     } // End of 'DestroyWindow' function
 
   }; // End of 'system' class
-} // end of 'tut::anim::window' namespace
+} // end of 'tut::system::window' namespace
 
 #endif // __window_h_

@@ -1,34 +1,59 @@
 //#include "utility/image.h"
 
-#include "anim/anim.h"
-#include "units/unit_test.h"
+#include "system/context.h"
+#include "system/window/window.h"
+#include "system/input/input.h"
 
 using namespace tut;
 int main( int argv, char **args )
 {
-  /* Resource management test * /
-  auto *ImgPtr {new image {"AAAA"}};
+  // Now I allocate systems here
+  // Later will remove it
+  // I store them as poiters because it retaines possibility of several implementation in future
+  system::context Ctx;
 
-  {
-    res_ptr<image> Img {ImgPtr};
-    {
-      res_ptr<image> AnotherPtr {std::move(Img)};
+  Ctx.WindowSystem = new system::window::system();
+  Ctx.InputSystem = new system::input::system();
+  // Self init
+  Ctx.WindowSystem->WaitInit();
+  Ctx.InputSystem->WaitInit();
+  
+  // Create main window
+  Ctx.MainWindow = Ctx.WindowSystem->CreateWindow("TUT main window", ivec2 {100, 100}, isize2 {300, 200}, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+  if (Ctx.MainWindow == nullptr)
+    throw std::exception("Main window creation error");
+  
+  // Post init
+  Ctx.WindowSystem->PostInit(Ctx);
+  Ctx.InputSystem->PostInit(Ctx);
 
-      AnotherPtr.Get()->GetFileName();
-    }
-  }
-  /**/
+  // Validate if everything is right
+  Ctx.Validate();
 
-  tut::anim::anim Anim  {};
+  // Main loop
+  Ctx.WindowSystem->RunEventPollLoop(); // Limitation of the platform: PollEvent loop has to be in the same thread... SDL WTF?
 
-  Anim.Init();
+  // Destroy main window
+  Ctx.WindowSystem->DestroyWindow(Ctx.MainWindow);
 
-  // Units
-  auto *u = Anim.GetContext().UnitSystem->CreateUnit<units::unit_test>();
+  // Closing systems
+  Ctx.InputSystem->Close();
+  Ctx.WindowSystem->Close();
 
-  Anim.GetContext().WindowSystem->RunEventPollLoop(); // Limitation of the platform: PollEvent loop has to be in the same thread... SDL WTF?
+  // Deallocate context
+  delete Ctx.InputSystem;
+  delete Ctx.WindowSystem;
 
-  Anim.Close();
+  // tut::anim::anim Anim  {};
+  // 
+  // Anim.Init();
+  // 
+  // // Units
+  // auto *u = Anim.GetContext().UnitSystem->CreateUnit<units::unit_test>();
+  // 
+  // Anim.GetContext().WindowSystem->RunEventPollLoop(); // Limitation of the platform: PollEvent loop has to be in the same thread... SDL WTF?
+  // 
+  // Anim.Close();
 
   return 0;
 } // End of 'main' function

@@ -1,12 +1,7 @@
-#ifndef __context_h_
-#define __context_h_
+#ifndef __messages_h_
+#define __messages_h_
 
-#include "tut.h"
-#include "window/window_defenitions.h"
-#include "input/input_defenitions.h"
-#include "units/units_defenitions.h"
-
-namespace tut::anim
+namespace tut::system
 {
   // Message classes
   namespace messages
@@ -72,32 +67,6 @@ namespace tut::anim
   {
     std::string Format( const message &Msg );
   } // end of 'messages' namespace
+}
 
-  class context
-  {
-  public:
-    // Systems
-    // Use pointers because class are only declared and pointers retain possibility of interfaces in future
-    window::system *WindowSystem {nullptr};
-    input::system *InputSystem {nullptr};
-    units::system *UnitSystem {nullptr};
-
-    // Global variables and states
-    window::window *MainWindow {nullptr};
-    async::channel<message> MsgQueue {};
-
-    // Default constructor
-    context( VOID )
-    {
-    } // End of 'context' function
-
-    // Forbidding copy/move
-    context( const context &Other ) = delete;
-    context & operator=( const context &Other ) = delete;
-    context( context &&Other ) noexcept = delete;
-    context & operator=( context &&Other ) noexcept = delete;
-
-  }; // End of 'context' class
-} // end of 'tut::anim' namespace
-
-#endif // __context_h_
+#endif // __messages_h_

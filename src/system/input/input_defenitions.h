@@ -8,7 +8,7 @@
 #endif // SDL_MAIN_HANDLED
 #include <SDL.h>
 
-namespace tut::anim::input
+namespace tut::system::input
 {
   // Types declarations
   class system;
@@ -277,6 +277,6 @@ namespace tut::anim::input
   private:
 
   }; // End of 'input_state' class
-} // end of 'tut::anim::input' namespace
+} // end of 'tut::system::input' namespace
 
 #endif // __input_defenitions_h_

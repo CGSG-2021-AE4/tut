@@ -1,8 +1,6 @@
-
-
 #include "context.h"
 
-namespace tut::anim::messages
+namespace tut::system::messages
 {
   std::string Format( const message &Msg )
   {

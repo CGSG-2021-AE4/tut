@@ -1,8 +1,7 @@
 #include "input.h"
-#include "../units/units.h"
 #include "../window/window.h"
 
-namespace tut::anim::input
+namespace tut::system::input
 {
   // Run event pop loop
   VOID system::RunLoop( VOID )
@@ -17,7 +16,7 @@ namespace tut::anim::input
         {
           using message_type = std::decay_t<decltype(Msg)>;
 
-          Ctx->UnitSystem->OnMessage(InMsg);
+          // Ctx->UnitSystem->OnMessage(InMsg);
           Ctx->InputSystem->OnMessage(InMsg);
           Ctx->WindowSystem->OnMessage(InMsg);
 
@@ -28,4 +27,4 @@ namespace tut::anim::input
       }, InMsg);
     }
   } // End of 'RunLoop' function
-} // end of 'tut::anim' namespace
+} // end of 'tut::system' namespace

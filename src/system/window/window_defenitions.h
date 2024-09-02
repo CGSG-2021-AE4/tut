@@ -1,7 +1,7 @@
 #ifndef __window_defenitions_h_
 #define __window_defenitions_h_
 
-namespace tut::anim::window
+namespace tut::system::window
 {
   // Types declarations
   class window;
@@ -16,6 +16,6 @@ namespace tut::anim::window
       IsMinimised = FALSE;
   }; // End of 'window_state' struct
 
-} // end of 'tut::anim::window' namespace
+} // end of 'tut::system::window' namespace
 
 #endif // __window_defenitions_h_

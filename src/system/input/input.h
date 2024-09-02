@@ -6,7 +6,7 @@
 #include "tut.h"
 #include "../context.h"
 
-namespace tut::anim::input
+namespace tut::system::input
 {
   class system
   {
@@ -54,6 +54,6 @@ namespace tut::anim::input
 
   }; // End of 'system' class
 
-} // end of 'tut::anim::input' namespace
+} // end of 'tut::system::input' namespace
 
 #endif // __input_h_
