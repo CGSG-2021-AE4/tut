@@ -1,28 +1,36 @@
 cmake_minimum_required(VERSION 3.20)
+
+set(CMAKE_TOOLCHAIN_FILE X:/vcpkg/scripts/buildsystems/vcpkg.cmake CACHE FILEPATH "")
+
 project(tut)
 
-add_executable(${PROJECT_NAME}
-  "src/main.cpp"
-  "src/anim/input/input.cpp"
-  "src/utility/resource.h"
-  "src/utility/image.h"
-  "src/utility/async.h"
-  "src/def.h"
-  "src/anim/anim.h"
-  "src/anim/window/window.h"
-  "src/tut.h"
-  "src/anim/context.h"
-  "src/units/unit_test.h"
-  "src/anim/context.cpp"
-  "src/anim/input/input_defenitions.h"
+file(GLOB_RECURSE APP_SOURCE
+  "src/*.cpp"
 )
 
-target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
+add_executable (${PROJECT_NAME} ${APP_SOURCE})
+target_include_directories(${PROJECT_NAME} PUBLIC ./src/)
 
 
-target_include_directories(${PROJECT_NAME}
-  PUBLIC "X:/SDL2-2.30.3/include"
-  PUBLIC "${PORJECT_SOURCE_DIR}src"
+
+set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 23)
+
+find_package(SDL2 CONFIG REQUIRED)
+target_link_libraries(${PROJECT_NAME}
+  PRIVATE
+  $<TARGET_NAME_IF_EXISTS:SDL2::SDL2main>
+  $<IF:$<TARGET_EXISTS:SDL2::SDL2>,SDL2::SDL2,SDL2::SDL2-static>
 )
 
-target_link_libraries(${PROJECT_NAME} "X:/SDL2-2.30.3/lib/x64/SDL2main.lib" "X:/SDL2-2.30.3/lib/x64/SDL2.lib" )
+find_package(SDL2_image CONFIG REQUIRED)
+target_link_libraries(${PROJECT_NAME}
+  PRIVATE
+  $<IF:$<TARGET_EXISTS:SDL2_image::SDL2_image>,SDL2_image::SDL2_image,SDL2_image::SDL2_image-static>
+)
+
+find_package(SDL2_ttf CONFIG REQUIRED)
+target_link_libraries(${PROJECT_NAME}
+  PRIVATE
+  $<IF:$<TARGET_EXISTS:SDL2_ttf::SDL2_ttf>,SDL2_ttf::SDL2_ttf,SDL2_ttf::SDL2_ttf-static>
+)
+
