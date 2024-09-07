@@ -4,6 +4,7 @@
 #include "tut.h"
 
 #include "../context.h"
+#include "system/render/render_defenitions.h"
 
 // Disable converting main to SDL_main
 #ifndef SDL_MAIN_HANDLED
@@ -18,6 +19,7 @@ namespace tut::system::window
   {
   protected:
     friend class system;
+    friend class render::system;
     
     SDL_Window *Wnd {nullptr}; // SDL window object
     state State {};     // Visual state

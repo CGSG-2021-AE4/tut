@@ -119,7 +119,7 @@ namespace tut::system::input
       ePeriod,       // .
 
       eValueCount,
-    }; // End of 'key' enum struct
+    }; // End of 'code' enum struct
 
     enum mods : BYTE
     {

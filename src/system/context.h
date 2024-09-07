@@ -4,6 +4,8 @@
 #include "tut.h"
 #include "window/window_defenitions.h"
 #include "input/input_defenitions.h"
+#include "render/render_defenitions.h"
+#include "object/object_manager.h"
 #include "messages.h"
 
 namespace tut::system
@@ -15,10 +17,12 @@ namespace tut::system
     // Use pointers because class are only declared and pointers retain possibility of interfaces in future
     window::system *WindowSystem {nullptr};
     input::system *InputSystem {nullptr};
+    render::system *RenderSystem {nullptr};
 
     // Global variables and states
     window::window *MainWindow {nullptr};
     async::channel<message> MsgQueue {};
+    object::manager ObjectManager {};
 
     // Default constructor
     context( VOID )
@@ -33,12 +37,14 @@ namespace tut::system
 
     // Checks if all values are valid and set otherwise throw an exception
     void Validate( void ) const {
-      // if (WindowSystem == nullptr)
-      //   throw std::runtime_error("window system is null");
-      // if (InputSystem == nullptr)
-      //   throw std::runtime_error("input system is null");
-      // if (MainWindow == nullptr)
-      //   throw std::runtime_error("main window is null");
+      if (WindowSystem == nullptr)
+        throw std::runtime_error("window system is null");
+      if (InputSystem == nullptr)
+        throw std::runtime_error("input system is null");
+      if (RenderSystem == nullptr)
+        throw std::runtime_error("render system is null");
+      if (MainWindow == nullptr)
+        throw std::runtime_error("main window is null");
     }
 
   }; // End of 'context' class

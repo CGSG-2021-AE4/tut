@@ -186,6 +186,7 @@ namespace tut::async
 
       std::mutex SyncMutex; // STL DO NOT SUPPORT CONDVAR WITH CUSTOM MUTEX TYPE WTF??????
       std::condition_variable CondVar;
+      std::atomic_bool StopFlag {false};
       std::deque<obj_type> Container;
 
     public:
@@ -197,6 +198,9 @@ namespace tut::async
 
       VOID Push( obj_type &&Obj )
       {
+        if (StopFlag.load(std::memory_order_acquire)) { // ... Not very well
+          return;
+        }
         std::lock_guard Lock(SyncMutex);
         Container.push_front(Obj);
         CondVar.notify_all();
@@ -204,6 +208,9 @@ namespace tut::async
 
       VOID PushBack( obj_type &&Obj )
       {
+        if (StopFlag.load(std::memory_order_acquire)) { // ... Not very well
+          return;
+        }
         std::lock_guard Lock(SyncMutex);
         Container.push_back(Obj);
         CondVar.notify_all();
@@ -212,10 +219,26 @@ namespace tut::async
       VOID Pop( obj_type &Obj )
       {
         std::unique_lock Lock(SyncMutex);
-        CondVar.wait(Lock, [this]{ return !Container.empty(); });
+        
+        CondVar.wait(Lock, [this]{
+          std::printf("%i\n", StopFlag.load());
+          return !Container.empty() || StopFlag.load(std::memory_order_acquire);
+        });
+        if (StopFlag.load(std::memory_order_acquire)) { // ... Not very well
+          return;
+        }
         Obj = Container.front();
         Container.pop_front();
       } // End of 'Pop' function
+
+      VOID Stop( VOID ) {
+        StopFlag.store(true, std::memory_order_release);
+        CondVar.notify_all();
+      }
+      
+      BOOL IsStop( VOID ) {
+        return StopFlag.load(std::memory_order_acquire);
+      }
 
     }; // End of 'channel' class
 

@@ -3,6 +3,9 @@
 #include "system/context.h"
 #include "system/window/window.h"
 #include "system/input/input.h"
+#include "system/object/object_manager.h"
+#include "system/render/render.h"
+
 
 using namespace tut;
 int main( int argv, char **args )
@@ -14,18 +17,26 @@ int main( int argv, char **args )
 
   Ctx.WindowSystem = new system::window::system();
   Ctx.InputSystem = new system::input::system();
+  Ctx.RenderSystem = new system::render::system();
   // Self init
   Ctx.WindowSystem->WaitInit();
   Ctx.InputSystem->WaitInit();
+  Ctx.RenderSystem->WaitInit();
   
+  // Init variables
   // Create main window
-  Ctx.MainWindow = Ctx.WindowSystem->CreateWindow("TUT main window", ivec2 {100, 100}, isize2 {300, 200}, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+  Ctx.MainWindow = Ctx.WindowSystem->CreateWindow("TUT main window",
+                                                  ivec2 {100, 100},
+                                                  isize2 {300, 200},
+                                                  SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
   if (Ctx.MainWindow == nullptr)
     throw std::exception("Main window creation error");
+  // Create object manager
   
   // Post init
   Ctx.WindowSystem->PostInit(Ctx);
   Ctx.InputSystem->PostInit(Ctx);
+  Ctx.RenderSystem->PostInit(Ctx);
 
   // Validate if everything is right
   Ctx.Validate();
@@ -37,10 +48,12 @@ int main( int argv, char **args )
   Ctx.WindowSystem->DestroyWindow(Ctx.MainWindow);
 
   // Closing systems
+  Ctx.RenderSystem->Close();
   Ctx.InputSystem->Close();
   Ctx.WindowSystem->Close();
 
   // Deallocate context
+  delete Ctx.RenderSystem;
   delete Ctx.InputSystem;
   delete Ctx.WindowSystem;
 
@@ -54,6 +67,5 @@ int main( int argv, char **args )
   // Anim.GetContext().WindowSystem->RunEventPollLoop(); // Limitation of the platform: PollEvent loop has to be in the same thread... SDL WTF?
   // 
   // Anim.Close();
-
   return 0;
 } // End of 'main' function
