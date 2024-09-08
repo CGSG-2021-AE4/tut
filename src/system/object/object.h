@@ -14,13 +14,16 @@ namespace tut::system::object {
   public:
 
     // Visual components
-    virtual void Draw( render::render_context *Context ) const = 0;
+    virtual void Draw( render::render_context &RndCtx ) const = 0;
     virtual void HandleWindowResize( const ivec2 &NewWindowSize ) = 0;
 
     // Input components
     virtual void Update() = 0;
     virtual bool CheckIntersection( const ivec2 &MousePos ) const = 0;
     virtual bool HandleMouse( const window::mouse &Mouse ) = 0;
+
+    // Closer interface
+    virtual void Close( void ) = 0;
 
     // For sorting
     void SetZ( int32_t NewZ ) {

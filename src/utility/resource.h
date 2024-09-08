@@ -149,6 +149,19 @@ namespace tut
         return Ptr;
       } // End of 'Get' function
 
+      // Overload operators
+      // Get
+      res_type * operator->( void ) noexcept
+      {
+        return Get();
+      } // End of 'Get' function
+
+      const res_type * operator->( void ) const noexcept
+      {
+        return Get();
+      } // End of 'Get' function
+
+
       // Casts TODO
 
       // Descructor

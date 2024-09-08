@@ -6,6 +6,7 @@
 #include "system/object/object_manager.h"
 #include "system/render/render.h"
 
+#include "app/components/sprite.h"
 
 using namespace tut;
 int main( int argv, char **args )
@@ -41,8 +42,21 @@ int main( int argv, char **args )
   // Validate if everything is right
   Ctx.Validate();
 
+  Ctx.RenderSystem->StartDraw(std::chrono::microseconds(10000));
+
+  // TEST START
+  app::components::sprite Sprite {};
+  Sprite.Init(&Ctx, std::string(BinDirPathPrefix) + "/man1.png", {10, 10, 10}, {100, 100, 100});
+  Ctx.ObjectManager.Add(&Sprite);
+  // TEST END
+
   // Main loop
   Ctx.WindowSystem->RunEventPollLoop(); // Limitation of the platform: PollEvent loop has to be in the same thread... SDL WTF?
+
+  Ctx.RenderSystem->StopDraw();
+
+  Sprite.Close();
+
 
   // Destroy main window
   Ctx.WindowSystem->DestroyWindow(Ctx.MainWindow);

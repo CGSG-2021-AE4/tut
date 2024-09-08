@@ -10,6 +10,7 @@
 #include <deque>
 #include <map>
 #include <set>
+#include <print>
 #include <array>
 #include <variant>
 #include <optional>
@@ -61,6 +62,8 @@ public:
 namespace tut
 {
   using namespace mth::common_types;
+
+  constexpr static const char *BinDirPathPrefix {"../../../bin/"};
 } // end of 'tut' namespace
 
 #endif // __def_h_

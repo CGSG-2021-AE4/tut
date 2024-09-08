@@ -11,9 +11,12 @@
 #define SDL_MAIN_HANDLED
 #endif // SDL_MAIN_HANDLED
 #include <SDL.h>
+#include <SDL_image.h>
+#include <SDL_ttf.h>
 
 namespace tut::system::window
 {
+  
   // Window
   class window
   {
@@ -66,6 +69,38 @@ namespace tut::system::window
     } // End of 'OnSwitchState' function
   }; // End of 'window' class
 
+  class lib_handler {
+    std::atomic_bool IsInited {false};
+
+  public:
+    void Init( void ) {
+      if (IsInited.exchange(true)) {
+        return;
+      }
+      if (SDL_Init(SDL_INIT_VIDEO) < 0)
+        throw std::exception("SDL init failed.");
+      if (IMG_Init(IMG_INIT_PNG) < 0)
+        throw std::exception("SDL image init failed.");
+      if (TTF_Init() < 0)
+        throw std::exception("SDL TTF init failed.");
+    }
+
+    void Close( void ) {
+      if (!IsInited.exchange(false)) {
+        return;
+      }
+      TTF_Quit();
+      IMG_Quit();
+      SDL_Quit();
+    }
+
+    static lib_handler & Get( void ) {
+      static lib_handler Handler;
+
+      return Handler;
+    }
+  };
+
   class system
   {
   public:
@@ -81,9 +116,7 @@ namespace tut::system::window
     // Self init
     VOID WaitInit( VOID )
     {
-      // SDL init
-      if (SDL_Init(SDL_INIT_VIDEO) < 0)
-        throw std::exception("SDL Init failed.");
+      lib_handler::Get().Init();
     } // End of 'WaitInit' function
 
     // Main event poll loop
@@ -187,7 +220,7 @@ namespace tut::system::window
       //   EventPollLoop.join();
       // Destroy all existing windows but... I do not store them yet)
       // SDL deinit
-      SDL_Quit();
+      lib_handler::Get().Close();
     } // End of 'Close' function
 
     VOID OnMessage( message &Msg )
