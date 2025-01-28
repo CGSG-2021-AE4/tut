@@ -158,10 +158,10 @@ namespace mth
      */
     matr & Identity( void )
     {
-      return this->matr(1, 0, 0, 0,
-                        0, 1, 0, 0,
-                        0, 0, 1, 0,
-                        0, 0, 0, 1);
+      return matr(1, 0, 0, 0,
+                  0, 1, 0, 0,
+                  0, 0, 1, 0,
+                  0, 0, 0, 1);
     } /* End of 'Transpose' function */
 
     /* 'MatrInverse' make inverse matriX from another matriX function.

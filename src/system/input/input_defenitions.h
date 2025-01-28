@@ -109,7 +109,7 @@ namespace tut::system::input
       eBackquote,    // `
       eMinus,        // -
       eEquals,       // =
-      eBackslash,    // \ 
+      eBackslash,    // slash
       eSlash,        // /
       eLeftBracket,  // [
       eRightBracket, // ]

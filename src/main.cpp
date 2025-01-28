@@ -9,6 +9,7 @@
 #include "app/components/sprite.h"
 
 using namespace tut;
+
 int main( int argv, char **args )
 {
   // Now I allocate systems here

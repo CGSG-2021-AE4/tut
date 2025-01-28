@@ -13,20 +13,26 @@ namespace tut::render::prims {
 
     system::context *Ctx {nullptr};
     SDL_Texture *Img {nullptr};
+    mutable async::spinlock Mutex;
     
   public:
 
     void Load( system::context *NewCtx, const std::string &Filename ) {
+      std::lock_guard _Lock(Mutex);
       Ctx = NewCtx;
 
       Img = IMG_LoadTexture(Ctx->RenderSystem->GetRndCtx().Renderer, Filename.c_str());
     }
 
     bool IsLoaded( void ) const noexcept {
+      std::shared_lock _Lock(Mutex);
+
       return Img != nullptr;
     }
 
     void Close() {
+      std::lock_guard _Lock(Mutex);
+
       if (Img != nullptr) {
         SDL_DestroyTexture(Img);
         Img = nullptr;
@@ -44,6 +50,7 @@ namespace tut::render::prims {
 
     res_ptr<image_data> Data;
     SDL_Rect Rect;
+    bool IsSeldLoaded {false};
     ivec2 SrcSize {};
     
   public:
@@ -52,6 +59,7 @@ namespace tut::render::prims {
       // Load data
       res_ptr<image_data> NewData = new image_data();
       NewData->Load(NewCtx, Filename);
+      IsSeldLoaded = true;
       if (NewData->Img == nullptr) {
         std::println("ERROR: failed to load image{}", Filename);
         return;
@@ -73,6 +81,7 @@ namespace tut::render::prims {
     void Load( system::context *NewCtx, res_ptr<image_data> NewData, const ivec3 &NewPos, const ivec3 &NewSize ) {
       // Load data
       SetImgData(NewData);
+      IsSeldLoaded = false;
       
       // Save rectangle
       Rect.x = NewPos.X;
@@ -114,7 +123,8 @@ namespace tut::render::prims {
     }
 
     void Close() {
-      // Data->Close(); // No because texture can be reused
+      if (IsSeldLoaded)
+        Data->Close(); // No because texture can be reused
     }
 
     void Draw( system::render::render_context &Ctx ) const {

@@ -65,6 +65,7 @@ namespace tut::system::render {
           DrawObjects();
           PresentCanvas();
           std::this_thread::sleep_until(Deadline);
+          std::print(".");
         }
       }, Timeout);
     }

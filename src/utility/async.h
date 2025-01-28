@@ -112,14 +112,14 @@ namespace tut::async
     } // End of 'spinlock::lock' function
 
     // Unlock as writer
-    VOID unlock( VOID )
+    VOID unlock( VOID ) noexcept
     {
       // DEBUG
-      if (UsersCounter.load(std::memory_order_relaxed) > 0)
-        throw std::runtime_error {"Spinlock is currently used by reader but tries to unlock as writer."};
+      // if (UsersCounter.load(std::memory_order_relaxed) > 0)
+      //   throw std::runtime_error {"Spinlock is currently used by reader but tries to unlock as writer."};
       UsersCounter.store(0, std::memory_order_release); // Very unsafe but ok
     } // End of 'unlock' function
-
+    
     // Lock as reader
     VOID lock_shared( VOID )
     {

@@ -63,7 +63,7 @@ namespace tut
 {
   using namespace mth::common_types;
 
-  constexpr static const char *BinDirPathPrefix {"../../../bin/"};
+  constexpr static const char *BinDirPathPrefix {"../../bin/"};
 } // end of 'tut' namespace
 
 #endif // __def_h_

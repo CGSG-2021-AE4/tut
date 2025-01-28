@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.20)
 
 # Setup vcpkg
-set(CMAKE_TOOLCHAIN_FILE X:/vcpkg/scripts/buildsystems/vcpkg.cmake CACHE FILEPATH "")
+# set(CMAKE_TOOLCHAIN_FILE X:/vcpkg/scripts/buildsystems/vcpkg.cmake CACHE FILEPATH "")
 # Create project
 project(tut)
 
